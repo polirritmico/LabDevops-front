@@ -1,0 +1,23 @@
+services:
+  web:
+    container_name: demo-django-devops
+    image: demo-django-devops:latest
+    environment:
+      - BACKEND_API_URL=http://host.docker.internal:8002
+    ports:
+      - 8001:8000
+    build:
+      context: .
+      target: develop
+    volumes:
+      - ./:/app/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  web-production:
+    container_name: demo-django-devops
+    image: docker.io/polirritmico/demo-django-devops:latest
+    ports:
+      - 8001:8000
+    profiles:
+      - production
