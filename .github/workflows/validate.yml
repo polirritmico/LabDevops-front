@@ -36,7 +36,7 @@ jobs:
         run: uv sync --frozen --group lint
 
       - name: Check Ruff lintern compliance
-        run: uv run ruff .
+        run: uv run ruff check .
 
   check-formatter:
     name: "2. Formatter check"
