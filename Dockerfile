@@ -18,7 +18,7 @@ COPY --chown=$USER:$USER pyproject.toml uv.lock ./
 FROM base AS develop
 RUN uv sync --frozen --dev
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["uv", "run", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
 FROM base AS production
@@ -29,4 +29,4 @@ ENV PYTHONDONTWRITEBYTECODE=true \
 RUN uv sync --frozen
 COPY --chown=$USER:$USER . .
 EXPOSE 8000
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "devopsdemo.wsgi:application", "--workers", "2"]
+CMD ["uv", "run", "gunicorn", "-b", "0.0.0.0:8000", "devopsdemo.wsgi:application", "--workers", "2"]
