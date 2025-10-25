@@ -10,22 +10,23 @@ RUN apt-get update \
     && install -d -o $USER -g $USER /app \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY --chown=$USER:$USER requirements*.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-ENV PATH="/home/$USER/.local/bin:$PATH"
 USER $USER:$USER
-
+ENV PATH="/home/$USER/.local/bin:$PATH"
+RUN pip install --no-cache-dir uv
+COPY --chown=$USER:$USER pyproject.toml uv.lock ./
 
 FROM base AS develop
-RUN pip install --no-cache-dir -r requirements-dev.txt
+RUN uv sync --frozen --dev
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
 FROM base AS production
-ENV PYTHONDONTWRITEBYTECODE=true
-ENV PYTHONUNBUFFERED=true
-ENV DJANGO_SETTINGS_MODULE=devopsdemo.settings
-ENV ALLOWED_HOSTS=*
+ENV PYTHONDONTWRITEBYTECODE=true \
+    PYTHONUNBUFFERED=true \
+    DJANGO_SETTINGS_MODULE=devopsdemo.settings \
+    ALLOWED_HOSTS=*
+RUN uv sync --frozen
+COPY --chown=$USER:$USER . .
 EXPOSE 8000
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "devopsdemo.wsgi:application", "--workers", "2"]
