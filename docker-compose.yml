@@ -22,6 +22,9 @@ services:
   web-production:
     container_name: labdevops-front
     image: docker.io/polirritmico/labdevops-front:latest
+    environment:
+      - DJANGO_DEBUG=FALSE
+    env_file: .env
     ports:
       - 8001:8000
     profiles:
