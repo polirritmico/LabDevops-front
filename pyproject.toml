@@ -31,6 +31,7 @@ tests = [
     "pytest (>=8.4,<9.0)",
     "pytest-django (>=4.11,<5.0)",
     "coverage (>=7.10,<8.0)",
+    "pytest-cov>=7.0.0",
 ]
 lint = [
     "black (>=25.9.0,<26.0.0)",
