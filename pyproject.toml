@@ -16,6 +16,7 @@ dependencies = [
     "requests (==2.32.5)",
     "sqlparse (==0.5.3)",
     "urllib3 (==2.5.0)",
+    "uv>=0.9.5",
 ]
 
 [dependency-groups]
@@ -30,7 +31,7 @@ tests = [
     "pytest (>=8.4,<9.0)",
     "pytest-django (>=4.11,<5.0)",
     "coverage (>=7.10,<8.0)",
-}
+]
 lint = [
     "black (>=25.9.0,<26.0.0)",
     "ruff (>=0.14.0,<0.15.0)",
