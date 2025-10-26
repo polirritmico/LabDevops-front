@@ -15,19 +15,28 @@ services:
       - "host.docker.internal:host-gateway"
 
   api-production:
-    extends:
-      file: ../LabDevops-back/docker-compose.yml
-      service: api-production
+    image: docker.io/polirritmico/labdevops-back:latest
+    ports:
+      - 8002:8080
+    networks:
+      - labdevops
 
   web-production:
     container_name: labdevops-front
     image: docker.io/polirritmico/labdevops-front:latest
     environment:
       - DJANGO_DEBUG=FALSE
+      - BACKEND_API_URL=http://host.docker.internal:8002
     env_file: .env
     ports:
       - 8001:8000
-    profiles:
-      - production
     depends_on:
       - api-production
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  labdevops:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_host_gateway: "true"
