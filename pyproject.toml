@@ -38,6 +38,9 @@ lint = [
     "black (>=25.9.0,<26.0.0)",
     "ruff (>=0.14.0,<0.15.0)",
 ]
+sonar = [
+    "pysonar>=1.2.0.2419",
+]
 
 
 [build-system]
@@ -55,3 +58,11 @@ package = false
 
 [tool.black]
 line-length = 88
+
+[tool.sonar]
+projectKey = "polirritmico_LabDevops-front"
+organization = "polirritmico"
+projectName = "LabDevops Front"
+sources = "."
+projectVersion = "0.1"
+sourceEncoding = "UTF-8"
