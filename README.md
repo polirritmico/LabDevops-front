@@ -19,24 +19,32 @@ technologies:
 1. Clone the repo
 
 ```bash
-git clone git@github.com:polirritmico/LabDevops.git
+git clone git@github.com:polirritmico/LabDevops-front.git
 ```
 
 2. Use Docker Compose:
 
-```bash
-docker compose up -d
-```
-
-3. Check the site at: `http://localhost:8001`.
-
-#### Using the production image from Docker Hub
+#### a. Using the production image from Docker Hub
 
 Just run the production service with docker compose:
 
 ```bash
-docker compose up -d web-production
+docker compose up web-production -d
 ```
+
+This would download both backend and frontend builded images from DockerHub and
+run both containers.
+
+3. Check the site at: `http://localhost:8001`.
+
+#### As an alternative you could build the image locally:
+
+```bash
+docker compose up web -d
+```
+
+Then clone and follow the
+[backend's](https://github.com/polirritmico/LabDevops-back) instructions.
 
 ### Manual build & Run
 
