@@ -82,7 +82,13 @@ jobs:
       - name: Run pytest with coverage
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        run: uv run pytest --cov=. --cov-report=xml --junitxml=report.xml
+          COVERAGE_THRESHOLD: ${{ vars.COVERAGE_THRESHOLD }}
+        run: |
+          uv run pytest \
+            --cov=. \
+            --cov-report=xml \
+            --junitxml=report.xml \
+            --cov-fail-under=${COVERAGE_THRESHOLD}
 
       - name: Upload coverage report artifact
         if: always()
@@ -130,4 +136,4 @@ jobs:
           uv run pysonar \
             -Dsonar.branch.name=${{ github.ref_name }} \
             -Dsonar.token="${SONAR_TOKEN}" \
-            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.python.coverage.reportPaths=coverage.xml || exit $?
