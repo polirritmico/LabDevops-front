@@ -80,6 +80,8 @@ jobs:
         run: uv sync --frozen --group tests
 
       - name: Run pytest with coverage
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: uv run pytest --cov=. --cov-report=xml --junitxml=report.xml
 
       - name: Upload coverage report artifact
