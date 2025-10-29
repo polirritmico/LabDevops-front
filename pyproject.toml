@@ -66,6 +66,3 @@ projectName = "LabDevops Front"
 sources = "."
 projectVersion = "0.1"
 sourceEncoding = "UTF-8"
-
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "devopsdemo.settings"

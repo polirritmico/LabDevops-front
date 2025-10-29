@@ -13,19 +13,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>{{ titulo }}</h1>
-    <p>Este texto debería aparecer en pantalla.</p>
-    <p>Y esta es una edición: 😗🎶</p>
-    <br />
-    <h2>Api</h2>
-    <p>La siguiente línea es una respuesta de la API:</p>
-    <blockquote class="blockquote p-3 m-2 bg-light rounded border">
-      {{ content }}
-    </blockquote>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+    <div class="container mt-4">
+      <h1 class="mb-4">{{ titulo }}</h1>
+      <p>Este texto debería aparecer en pantalla.</p>
+      <p>Y esta es una edición: 😗🎶</p>
+      <br />
+      <h2 class="h4">Comunicación con el backend</h2>
+      <p>La siguiente línea es una respuesta de la API:</p>
+      <blockquote class="blockquote p-3 m-2 bg-light rounded border">
+        {{ content }}
+      </blockquote>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+      ></script>
+    </div>
   </body>
 </html>
