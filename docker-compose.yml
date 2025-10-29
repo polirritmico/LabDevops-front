@@ -3,6 +3,7 @@ services:
     container_name: labdevops-front
     image: labdevops-front:latest
     environment:
+      - DJANGO_DEBUG=TRUE
       - BACKEND_API_URL=http://host.docker.internal:8002
     ports:
       - 8001:8000
@@ -20,6 +21,14 @@ services:
       - 8002:8080
     networks:
       - labdevops
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
 
   web-production:
     container_name: labdevops-front
@@ -29,11 +38,19 @@ services:
       - BACKEND_API_URL=http://host.docker.internal:8002
     env_file: .env
     ports:
-      - 8001:8000
+      - 8000:8000
     depends_on:
       - api-production
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
 
 networks:
   labdevops:
