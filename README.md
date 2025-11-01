@@ -1,8 +1,9 @@
-# 🚀 LabDevOps
+# 🚀 LabDevOps Frontend
 
 A sample project demostrating the usage of [git](https://git-scm.com/),
-[Github](www.github.com), [Github Actions](https://github.com/features/actions)
-and other best development practices.
+[Github](https://github.com),
+[Github Actions](https://github.com/features/actions) and other best development
+practices.
 
 ## Demo project
 
@@ -22,7 +23,7 @@ technologies:
 git clone git@github.com:polirritmico/LabDevops-front.git
 ```
 
-2. Use Docker Compose:
+2. 🐳 Use Docker Compose:
 
 #### a. Using the production image from Docker Hub
 
@@ -35,7 +36,7 @@ docker compose up web-production -d
 This would download both backend and frontend builded images from DockerHub and
 run both containers.
 
-3. Check the site at: `http://localhost:8001`.
+3. Check the site at: `http://localhost:8000`.
 
 #### As an alternative you could build the image locally:
 
@@ -53,13 +54,13 @@ docker build -t lab-devops:latest .
 docker run lab-devops
 ```
 
-### 🐳 Enter into the container env
+### Enter into the container env
 
 ```bash
 docker run -it lab-devops bash
 ```
 
-## Makefile
+## 🛠️ Makefile
 
 There is a convenient Makefile provided for common development tasks. Check
 detailed instructions with:
@@ -78,7 +79,7 @@ By default it executes **pytest** with **coverage**.
 
 ---
 
-## Development workflow
+## 🏗️ Development workflow
 
 The project follows a trunk-based workflow on the `develop` branch, aligning
 with modern CI/CD practices.
@@ -107,9 +108,14 @@ This decision aims to encourage the following practices:
 
 ### Github Actions
 
-Currently, there is a `Build & Push to Docker Hub` action in the GitHub workflow
-scripts that build the Docker image and push it to the Docker hub. The action is
-trigger by any push into the `main` branch.
+> [!IMPORTANT]
+>
+> For them complete details of the workflow read the backend repository
+> [README](https://github.com/polirritmico/LabDevops-back/blob/main/README.md).
+
+Currently, there is a `Push to Docker Hub` action in the GitHub workflow scripts
+that after building the Docker image push it to the Docker hub. The action is
+trigger by any validated push into the `main` branch.
 
 You could find the builded Docker image here:
 [Docker Hub](https://hub.docker.com/repository/docker/polirritmico/demo-django-devops/general).
@@ -122,20 +128,33 @@ Build** section.
 The project has the following directories structure:
 
 ```
-.
+LabDevops-front
 ├── CHANGELOG.md
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
+├── coverage.xml
+├── db.sqlite3
 ├── devopsdemo
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
 ├── docker-compose.yml
 ├── Dockerfile
-├── htmlcov
 ├── LICENSE
 ├── Makefile
 ├── manage.py
+├── pyproject.toml
 ├── README.md
-├── requirements-dev.txt
-├── requirements.txt
-├── tests
+├── uv.lock
 └── web
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    ├── models.py
+    ├── templates
+    │   └── index.html
+    ├── tests
+    │   └── test_devopsdemo.py
+    └── views.py
 ```
