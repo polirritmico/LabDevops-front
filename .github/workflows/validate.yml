@@ -1,4 +1,4 @@
-name: "EV2 | 1. Validations"
+name: "1. Validations"
 
 on:
   push:
@@ -11,6 +11,7 @@ permissions:
   packages: write
   id-token: write
   pages: write
+  security-events: write
 
 concurrency:
   group: release-${{ github.event.workflow_run.head_sha }}
@@ -81,8 +82,8 @@ jobs:
 
       - name: Run pytest with coverage
         env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           COVERAGE_THRESHOLD: ${{ vars.COVERAGE_THRESHOLD }}
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           DJANGO_SETTINGS_MODULE: devopsdemo.settings
         run: |
           uv run pytest \
@@ -110,8 +111,81 @@ jobs:
           check_name: "Pytest Results"
           detailed_summary: true
 
+  snyk-analysis:
+    name: "4. Synk Security Scan"
+    needs: check-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install all dependencies and generate requirements.txt
+        run: |
+          uv sync --frozen
+          uv export --format=requirements.txt > requirements.txt
+
+      - name: Snyk Setup
+        uses: snyk/actions/setup@master
+
+      - name: Install dependencies for Snyk (uv workaround)
+        run: pip install -r requirements.txt
+
+      - name: Run Snyk (pip fallback)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          snyk test \
+            --file=requirements.txt \
+            --sarif-file-output=snyk.sarif \
+            --json-file-output=snyk.json \
+            --severity-threshold=high \
+            --fail-on=upgradable \
+            --no-root
+
+      - name: Upload Snyk SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+
+      - name: Upload Snyk JSON report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-json-report
+          path: snyk.json
+          if-no-files-found: ignore
+
+      - name: Display JSON summary
+        if: always()
+        run: |
+          TOTAL=$(jq '.vulnerabilities | length' snyk.json 2>/dev/null || echo 0)
+          {
+            echo "### Snyk Vulnerabilities Summary"
+            echo ""
+            echo "- **Total:** $TOTAL"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          for level in critical high medium low; do
+            COUNT=$(jq "[.vulnerabilities[] | select(.severity==\"$level\") ] | length" snyk.json 2>/dev/null || echo 0)
+            echo "- **${level^}:** $COUNT" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          FAIL_COUNT=$(jq '[.vulnerabilities[] | select(.severity=="high" or .severity=="critical")] | length' snyk.json 2>/dev/null || echo 0)
+          if [ "$FAIL_COUNT" -gt 0 ]; then
+            echo "High/Critical vulnerabilities detected!"
+            exit 1
+          fi
+
   sonar-analysis:
-    name: "4. SonarQube Static Analysis"
+    name: "5. SonarQube Static Analysis"
     needs: check-tests
     runs-on: ubuntu-latest
     steps:
