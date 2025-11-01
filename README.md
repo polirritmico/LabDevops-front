@@ -5,6 +5,9 @@ A sample project demostrating the usage of [git](https://git-scm.com/),
 [Github Actions](https://github.com/features/actions) and other best development
 practices.
 
+The backend repository could be found
+[here](https://github.com/polirritmico/LabDevops-back).
+
 ## Demo project
 
 The demo projects consists of a simple static page built with the following
