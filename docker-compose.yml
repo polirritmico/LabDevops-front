@@ -19,6 +19,8 @@ services:
     image: docker.io/polirritmico/labdevops-back:latest
     ports:
       - 8002:8080
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - labdevops
     deploy:
@@ -33,6 +35,8 @@ services:
   web-production:
     container_name: labdevops-front
     image: docker.io/polirritmico/labdevops-front:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     environment:
       - DJANGO_DEBUG=FALSE
       - BACKEND_API_URL=http://host.docker.internal:8002
@@ -51,6 +55,14 @@ services:
         reservations:
           memory: 512M
           cpus: "0.5"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup --label-enable
 
 networks:
   labdevops:
