@@ -23,6 +23,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - labdevops
+    restart: unless-stopped
     deploy:
       resources:
         limits:
@@ -35,6 +36,7 @@ services:
   web-production:
     container_name: labdevops-front
     image: docker.io/polirritmico/labdevops-front:latest
+    restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:

@@ -24,8 +24,7 @@ CMD ["uv", "run", "manage.py", "runserver", "0.0.0.0:8000"]
 FROM base AS production
 ENV PYTHONDONTWRITEBYTECODE=true \
     PYTHONUNBUFFERED=true \
-    DJANGO_SETTINGS_MODULE=devopsdemo.settings \
-    ALLOWED_HOSTS=*
+    DJANGO_SETTINGS_MODULE=devopsdemo.settings
 RUN uv sync --frozen
 COPY --chown=$USER:$USER . .
 EXPOSE 8000
