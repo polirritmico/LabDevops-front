@@ -14,7 +14,8 @@
     <div class="container mt-4">
       <h1 class="mb-4">{{ titulo }}</h1>
       <p>Este texto debería aparecer en pantalla.</p>
-      <p>Y esta es una edición actualizada automáticamente: 😗🎶</p>
+      <p>Se actualiza automáticamente.</p>
+      <p>Y esta es una edición: 😗🎶</p>
       <br />
       <h2 class="h4">Comunicación con el backend</h2>
       <p>La siguiente línea es una respuesta de la API:</p>
@@ -25,16 +26,31 @@
       <form method="post" class="mt-4 d-flex align-items-center gap-2">
         {% csrf_token %}
         <label for="duration">Duración del CPU-Burn (segundos):</label>
-        <input type="number" name="duration" value="5" min="5" step="5" class="form-control w-auto" />
+        <input type="number"
+               name="duration"
+               value="5"
+               min="5"
+               step="5"
+               class="form-control w-auto" />
         <button type="submit" class="btn btn-danger">Iniciar CPU-Burn</button>
       </form>
       <div class="mt-4">
         <form method="post" class="d-flex align-items-center gap-2">
           {% csrf_token %}
           <label for="loop_duration">Duración CPU-burn (s):</label>
-          <input type="number" name="loop_duration" value="5" min="1" step="1" class="form-control w-auto" />
+          <input type="number"
+                 name="loop_duration"
+                 value="5"
+                 min="1"
+                 step="1"
+                 class="form-control w-auto" />
           <label for="loop_pause">Pausa entre loops (s):</label>
-          <input type="number" name="loop_pause" value="2" min="0" step="1" class="form-control w-auto" />
+          <input type="number"
+                 name="loop_pause"
+                 value="2"
+                 min="0"
+                 step="1"
+                 class="form-control w-auto" />
           <button type="submit" name="loop_start" class="btn btn-warning">Iniciar Loop-Pausa</button>
           <button type="submit" name="loop_stop" class="btn btn-secondary">Detener Loop-Pausa</button>
         </form>
